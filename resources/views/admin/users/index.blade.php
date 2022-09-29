@@ -6,8 +6,8 @@
         <x-admin.sidebar></x-admin.sidebar>
 
         <div class="flex-col p-10 text-2xl">
-            <livewire:brands-table
-                seachable="name"
+            <livewire:users-table
+                seachable="name, email"
                 exportable
             />
         </div>
