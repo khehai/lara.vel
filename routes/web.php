@@ -66,6 +66,7 @@ Route::name('admin.')->group(
         Route::resource('admin/brands', 'App\Http\Controllers\Admin\BrandController');
         Route::resource('admin/categories', 'App\Http\Controllers\Admin\CategoryController');
         Route::resource('admin/users', 'App\Http\Controllers\Admin\UserController');
+         Route::resource('admin/products', 'App\Http\Controllers\Admin\ProductController');
     }
 );
 

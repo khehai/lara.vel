@@ -1,9 +1,7 @@
-<div>
+<div class="flex items-center justify-center flex-wrap">
+
     @foreach ($products as $product)
-        <div class="mb-6">
-            <h1 class="text-xl">#{{ $product->id }} {{ $product->name }}</h1>
-            <p>{{ $product->description }}</p>
-        </div>
+        <x-app.product-item :product="$product" />
     @endforeach
 
     <div x-data="{

@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 
-class Product extends Model
+class Tag extends Model
 {
-    use HasFactory;
+    use HasFactory, Sluggable;
 
-     public function sluggable(): array
+    public function sluggable(): array
     {
         return [
             'slug' => [
@@ -18,12 +18,7 @@ class Product extends Model
             ]
             ];
     }
-
-    public function category() {
-        return $this->belongsTo(Category::class);
-    }
-
-    public function tags() {
-        return $this->belongsToMany(Tag::class);
+    public function products() {
+        return $this->belongsToMany(Product::class);
     }
 }
