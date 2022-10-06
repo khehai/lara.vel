@@ -18,7 +18,18 @@
 
 <!-- content -->
         <div class="flex-1 p-10 text-2xl">
-            <form method="POST" action="{{ route('admin.products.update', $product->id) }}" class="py-4 px-10 max-w-7xl mx-auto" enctype="multipart/form-data">
+
+            @if ($errors->any())
+            <div class="alert alert-danger text-red-500">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+
+        @endif
+            <form method="POST" action="{{ route('admin.products.update', $product->slug) }}" class="py-4 px-10 max-w-7xl mx-auto" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -56,7 +67,7 @@
 
 <div class="mt-4 px-10">
                   <label class="block text-sm font-medium text-gray-700">Cover picture</label>
-                  <x-form.upload name="cover" :value="old('cover', $product->cover)" />
+                  <x-form.uploads name="pictures[]" :value="old('pictures[]')" />
             </div>
 
                 <div class="mt-4 px-5">

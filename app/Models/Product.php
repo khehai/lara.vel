@@ -10,16 +10,14 @@ class Product extends Model
 {
     use HasFactory, Sluggable;
 
-    protected $fillable = ['name', 'slug', 'details',
-     'price', 'cover', 'description', 'status',
-     'category_id', 'brand_id'];
+    protected $fillable = ['name', 'slug', 'details', 'price', 'cover', 'description', 'status', 'category_id', 'brand_id'];
 
     public function getRouteKeyName()
     {
         return 'slug';
     }
 
-     public function sluggable(): array
+    public function sluggable(): array
     {
         return [
             'slug' => [
@@ -32,7 +30,15 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function brand() {
+        return $this->belongsTo(Brand::class);
+    }
+
     public function tags() {
         return $this->belongsToMany(Tag::class);
+    }
+
+    public function pictures() {
+        return $this->hasMany(Picture::class);
     }
 }

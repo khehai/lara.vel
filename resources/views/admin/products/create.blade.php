@@ -17,12 +17,29 @@
         <!-- content -->
         <div class="flex-1 p-10 text-2xl">
 
+            @if ($errors->any())
+                <div class="alert alert-danger text-red-500">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+
+            @endif
+
             <form method="POST" action="{{ route('admin.products.store') }}" class="py-4 px-10 max-w-7xl mx-auto" enctype="multipart/form-data">
             @csrf
             <div class="flex item-center justify-between mt-4">
                 <div class="w-full px-10"
                     <x-jet-label for="name" value="{{ __('Name') }}" />
                     <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+
+                    @error('name')
+                    <div class="alert alert-danger text-red-500">
+                            {{ $message }}
+                    </div>
+                    @enderror
                 </div>
                 <div class="w-full px-10"
                     <x-jet-label for="price" value="{{ __('Price') }}" />
@@ -33,6 +50,11 @@
             <div class="mt-4 px-10"
                     <x-jet-label for="details" value="{{ __('Details') }}" />
                     <x-jet-input id="details" class="block mt-1 w-full" type="text" name="details" :value="old('details')" required autofocus autocomplete="details" />
+                    @error('details')
+                    <div class="alert alert-danger text-red-500">
+                            {{ $message }}
+                    </div>
+                    @enderror
             </div>
 
             <div class="flex item-center justify-between mt-4">

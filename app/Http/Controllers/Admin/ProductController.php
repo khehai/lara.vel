@@ -10,6 +10,8 @@ use App\Enums\ProductStatus;
 use Illuminate\Http\FileHelpers;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\UpdateProduct;
+
 
 class ProductController extends Controller
 {
@@ -33,8 +35,7 @@ class ProductController extends Controller
         $categories = \App\Models\Category::pluck('name', 'id');
         $brands = \App\Models\Brand::pluck('name', 'id');
         $status = ProductStatus::asArray();
-        return view('admin.products.create', ['categories'=>$categories,
-        'brands'=>$brands, 'status'=>$status]);
+        return view('admin.products.create', ['categories'=>$categories, 'brands'=>$brands, 'status'=>$status]);
     }
 
     /**
@@ -45,6 +46,13 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // dump($request);
+
+        $validated = $request->validate([
+            'name' => 'required|min:3',
+            'details' => 'required|max:255'
+        ]);
+
         $file = $request->file('cover');
         $caver = '';
         if($request->hasFile('cover'))
@@ -63,6 +71,7 @@ class ProductController extends Controller
         $product->save();
 
         return redirect()->route('admin.products.index');
+
     }
 
     /**
@@ -90,9 +99,7 @@ class ProductController extends Controller
         $selected_tags = $product->tags()->pluck('id')->toArray();
         $tags = \App\Models\Tag::pluck('name', 'id');
 
-        return view('admin.products.edit', ['categories'=>$categories, 'brands'=>$brands, 'status'=>$status, 'product'=>$product,
-        'tags'=>$tags, 'selected_tags'=>$selected_tags]);
-
+        return view('admin.products.edit', ['categories'=>$categories, 'brands'=>$brands, 'status'=>$status, 'product'=>$product, 'tags'=>$tags, 'selected_tags'=>$selected_tags]);
     }
 
     /**
@@ -102,9 +109,54 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(UpdateProduct $request, Product $product)
     {
-        //
+        // dd($request);
+        // dd($request->tags);
+
+        foreach ($request->file('pictures') as $picture){
+            $img = new \App\Models\Picture;
+            $path = $picture->storeAs('images', $picture->hashName(), 'public');
+            $img->url = $path;
+            $img->product_id = $product->id;
+            $img->save();
+        }
+
+        // dd($img);
+
+        $file = $request->file('cover');
+        // $caver = '';
+        if ($request->hasFile('cover')) {
+            $img_path = storage_path("app/public/".$product->cover);
+            if (Storage::disk('public')->exists($product->cover)) {
+                // dd($img_path);
+                unlink($img_path);
+            }
+            $cover = $request->file('cover')->storeAs('images', $file->hashName(), 'public');
+        }else{
+            $cover = $product->cover;
+        }
+
+        $product->update([
+            'name' => $request->name,
+            'details' => $request->details,
+            'description' => $request->description,
+            'price' => $request->price,
+            'status' => $request->status,
+            'cover' => $cover,
+            'category_id' => $request->category_id,
+            'brand_id' => $request->brand_id,
+        ]);
+
+        if ($request->tags){
+            $tags = explode(',', $request->tags);
+            $product->tags()->sync($tags);
+        }else{
+            $product->tags()->detach();
+        }
+
+        return redirect()->route('admin.products.index')->with('success', 'Product updated successfully!');
+
     }
 
     /**

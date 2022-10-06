@@ -11,15 +11,19 @@
             stroke="white"><path stroke-linecap="round" fill="red" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
           </span>
         </div>
-        <img src="{{ $product->cover }}" alt="{{ $product->name }}"
+
+
+        <img src="{{ asset(storage::url($product->cover)) }}" alt="{{ $product->name }}"
         class="object-cover h-48 w-96 rounded">
               </div>
 
                <div class="flex-auto p-2 justify-evenly">
                 <div class="flex flex-wrap ">
                   <div class="flex items-center justify-between w-full min-w-0 ">
+                    <a href="{{ route('product.details', $product->id) }}">
 
-                    <h2 class="mr-auto text-lg cursor-pointer hover:text-gray-900 font-semibold">{{ \Illuminate\Support\Str::limit($product->name, 25, $end='...') }}</h2>
+                        <h2 class="mr-auto text-lg cursor-pointer hover:text-gray-900 font-semibold">{{ \Illuminate\Support\Str::limit($product->name, 25, $end='...') }}</h2>
+                    </a>
 
                     <div class="mt-1 text-xl font-semibold">${{ $product->price }}</div>
                   </div>

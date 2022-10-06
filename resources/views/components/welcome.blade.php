@@ -6,7 +6,8 @@
     </x-slot>
 
     <div class="mx-4">
+
         <livewire:product-list />
-        
+
     </div>
 </x-app-layout>

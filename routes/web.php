@@ -17,46 +17,18 @@ Route::get('/', function () {
     return view('components.welcome');
 })->name('home');
 
-
-
 Route::get('/contact', function () {
     return view('components.contact-page');
 })->name('contact');
-
-
 
 Route::get('/about', function () {
     return view('components.about-page');
 })->name('about');
 
-Route::get('/test', function () {
-    // $brands = \DB::table('brands')->get();
-    // foreach($brands as $brand){
-    //     dump($brand);
-    // }
+Route::get('/upload/{id}', App\Http\Livewire\UploadPictures::class)->name('upload-pictures');
+route::get('product-details/{id}',App\Http\Livewire\ShowProduct::class)->name('product.details');
+route::get('shopping-cart',App\Http\Livewire\ShoppingCart::class)->name('shopping.cart');
 
-    // $brand = \DB::table('brands')->where('id', '=', 1)->first();
-    // $brand = \DB::table('brands')->where('id', 1)->first();
-    // $brand = \DB::table('brands')->find(1);
-    // dump($brand);
-
-    // $names = \DB::table('users')->pluck('name');
-    // foreach($names as $name){
-    //     dump($name);
-    // }
-
-    // $names = \DB::table('users')->pluck('id', 'name');
-    // foreach($names as $name => $id){
-    //     dump($id, $name);
-    // }
-    $brand = \DB::table('brands')->latest()->first();
-    dump($brand);
-    $brand = \DB::table('brands')->oldest()->first();
-    dump($brand);
-
-});
-
-// Route::get('/about', [App\Http\Controllers\AboutController::class, 'index'])->name('about-us');
 // Route::get('/contact', [App\Http\Controllers\ContactController::class, 'index'])->name('contact-us');
 
 Route::name('admin.')->group(
@@ -66,7 +38,7 @@ Route::name('admin.')->group(
         Route::resource('admin/brands', 'App\Http\Controllers\Admin\BrandController');
         Route::resource('admin/categories', 'App\Http\Controllers\Admin\CategoryController');
         Route::resource('admin/users', 'App\Http\Controllers\Admin\UserController');
-         Route::resource('admin/products', 'App\Http\Controllers\Admin\ProductController');
+        Route::resource('admin/products', 'App\Http\Controllers\Admin\ProductController');
     }
 );
 
