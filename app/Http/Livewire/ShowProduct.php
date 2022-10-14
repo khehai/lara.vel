@@ -9,6 +9,8 @@ class ShowProduct extends Component
 {
     public $product;
     public $pictures;
+    public $current = 0;
+    public $quantity;
 
     public function mount($id) {
         $this->product = Product::with('brand')->with('category')->with('tags')->find($id);
@@ -17,6 +19,24 @@ class ShowProduct extends Component
 
     public function render()
     {
-        return view('livewire.show-product', ['product'=>$this->product, 'pictures'=>$this->pictures]);
+        if($this->pictures->isEmpty()){
+            $this->pictures = collect(new Picture);
+            $this->pictures->push(['url'=>$this->product->cover]);
+        }
+        return view('livewire.show-product');
+    }
+
+    public function addToCart($id) {
+        $product = Product::findOrFail($id);
+        \Cart::add([
+            'id' => $product->id,
+            'name'=>$product->name,
+            'price' => $product->price / 100,
+            'quantity' => $this->quantity ?? 1,
+            'attributes' => [
+                'image' => $product->cover,
+            ]
+            ]);
+            $this->emit('cart_updated');
     }
 }

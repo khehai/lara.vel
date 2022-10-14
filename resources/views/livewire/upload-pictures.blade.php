@@ -26,7 +26,6 @@
       </div>
       <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
     </div>
-    
     <footer class="flex justify-end px-8 pb-8 pt-4">
         <button class="rounded-sm px-3 py-1 bg-indigo-700 hover:bg-indigo-500 text-white focus:shadow-outline" type="submit">Upload now</button>
         <button class="rounded-sm px-3 py-1 bg-gray-700 hover:bg-gray-500 text-white focus:shadow-outline">Cancel</button>

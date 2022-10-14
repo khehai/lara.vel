@@ -13,7 +13,7 @@
         </div>
 
 
-        <img src="{{ asset(storage::url($product->cover)) }}" alt="{{ $product->name }}"
+        <img src="{{ asset(Storage::url($product->cover)) }}" alt="{{ $product->name }}"
         class="object-cover h-48 w-96 rounded">
               </div>
 

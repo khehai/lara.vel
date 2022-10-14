@@ -122,7 +122,7 @@ class ProductController extends Controller
             $img->save();
         }
 
-        // dd($img);
+        dd($img);
 
         $file = $request->file('cover');
         // $caver = '';

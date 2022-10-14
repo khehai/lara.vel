@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,9 +28,18 @@ Route::get('/about', function () {
     return view('components.about-page');
 })->name('about');
 
+Route::get('/order', function () {
+    return new App\Mail\OrderShipped();
+})->name('order');
+
+Route::get('/send-order', function () {
+    Mail::to('test@my.com')->send(new App\Mail\OrderShipped());
+    return "<h2>A message has been sent to MailTrap</h2>";
+})->name('send.order');
+
 Route::get('/upload/{id}', App\Http\Livewire\UploadPictures::class)->name('upload-pictures');
 route::get('product-details/{id}',App\Http\Livewire\ShowProduct::class)->name('product.details');
-route::get('shopping-cart',App\Http\Livewire\ShoppingCart::class)->name('shopping.cart');
+route::get('shopping-cart', App\Http\Livewire\ShoppingCart::class)->name('shopping.cart');
 
 // Route::get('/contact', [App\Http\Controllers\ContactController::class, 'index'])->name('contact-us');
 
@@ -41,6 +53,20 @@ Route::name('admin.')->group(
         Route::resource('admin/products', 'App\Http\Controllers\Admin\ProductController');
     }
 );
+
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect('/dashboard');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 
 Route::middleware([
