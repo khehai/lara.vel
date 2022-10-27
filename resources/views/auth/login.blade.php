@@ -44,5 +44,6 @@
                 </x-jet-button>
             </div>
         </form>
+        <x-social />
     </x-jet-authentication-card>
 </x-guest-layout>

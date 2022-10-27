@@ -51,6 +51,7 @@ Route::name('admin.')->group(
         Route::resource('admin/categories', 'App\Http\Controllers\Admin\CategoryController');
         Route::resource('admin/users', 'App\Http\Controllers\Admin\UserController');
         Route::resource('admin/products', 'App\Http\Controllers\Admin\ProductController');
+        Route::resource('admin/roles', 'App\Http\Controllers\Admin\RoleController');
     }
 );
 
@@ -68,6 +69,11 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
+Route::get('auth/github', [App\Http\Controllers\GithubSocialController::class, 'redirect']);
+Route::get('callback/github', [App\Http\Controllers\GithubSocialController::class, 'callback']);
+
+Route::get('auth/google', [App\Http\Controllers\GoogleSocialController::class, 'redirect']);
+Route::get('callback/google', [App\Http\Controllers\GoogleSocialController::class, 'callback']);
 
 Route::middleware([
     'auth:sanctum',

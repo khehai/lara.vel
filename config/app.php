@@ -69,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' =>  'Europe/Kiev',
 
     /*
     |--------------------------------------------------------------------------
@@ -187,6 +187,7 @@ return [
          */
 
         Darryldecode\Cart\CartServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -215,6 +216,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'Cart' => Darryldecode\Cart\Facades\CartFacade::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
     ])->toArray(),
 
 ];
