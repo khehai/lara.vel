@@ -75,6 +75,17 @@ Route::get('callback/github', [App\Http\Controllers\GithubSocialController::clas
 Route::get('auth/google', [App\Http\Controllers\GoogleSocialController::class, 'redirect']);
 Route::get('callback/google', [App\Http\Controllers\GoogleSocialController::class, 'callback']);
 
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/checkout', [App\Http\Controllers\CheckoutController::class, 'checkout'])->name('checkout.index');
+    Route::post('/checkout/order', [App\Http\Controllers\CheckoutController::class, 'placeOrder'])->name('checkout.place.order');
+});
+
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
